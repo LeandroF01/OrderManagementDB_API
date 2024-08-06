@@ -1,7 +1,9 @@
 ﻿using DB;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace OrderManagementDB_API.Controllers
 {
@@ -11,8 +13,9 @@ namespace OrderManagementDB_API.Controllers
     {
         private OrderManagementDBContext _context;
 
-        public UsersController(OrderManagementDBContext context) {
-            _context = context;              
+        public UsersController(OrderManagementDBContext context)
+        {
+            _context = context;
         }
         //cambio
         [HttpGet]
@@ -35,23 +38,32 @@ namespace OrderManagementDB_API.Controllers
 
         // POST: api/users
         [HttpPost]
-        public async Task<ActionResult<Users>> Post(Users Users)
+        public async Task<ActionResult<Users>> Post(Users users)
         {
-            _context.Users.Add(Users);
+            // Hashear la contraseña antes de guardarla
+            users.Password = HashPassword(users.Password);
+
+            _context.Users.Add(users);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = Users.UserID }, Users);
+
+            return CreatedAtAction(nameof(Get), new { id = users.UserID }, users);
         }
 
         // PUT: api/users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Users Users)
+        public async Task<IActionResult> Put(int id, Users users)
         {
-            if (id != Users.UserID)
+            if (id != users.UserID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(Users).State = EntityState.Modified;
+            if (!string.IsNullOrEmpty(users.Password))
+            {
+                users.Password = HashPassword(users.Password);
+            }
+
+                _context.Entry(users).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -72,5 +84,20 @@ namespace OrderManagementDB_API.Controllers
 
             return NoContent();
         }
+
+        private string HashPassword(string password)
+        {
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: new byte[0], // Sin usar salt, se pasa un array vacío
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return hashed;
+        }
+
+
     }
 }
