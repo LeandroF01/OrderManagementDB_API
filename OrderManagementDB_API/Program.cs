@@ -1,5 +1,6 @@
 using DB;
 using Microsoft.EntityFrameworkCore;
+using OrderManagementDB_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrderManagementDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("OrderManagementDB"));
 });
+
+// Registrar AuthService como un servicio
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
