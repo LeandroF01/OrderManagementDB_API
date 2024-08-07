@@ -1,4 +1,5 @@
 ﻿using DB;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace OrderManagementDB_API.Controllers
             _context = context;
         }
         //cambio
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Users>>> Get()
         {
@@ -37,6 +39,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // POST: api/users
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Users>> Post(Users users)
         {
@@ -50,6 +53,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // PUT: api/users/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Users users)
         {
@@ -70,6 +74,8 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // DELETE: api/users/5
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

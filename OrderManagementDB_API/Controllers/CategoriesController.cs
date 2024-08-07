@@ -1,4 +1,5 @@
 ﻿using DB;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // POST: api/categories
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Categories>> Post(Categories categories)
         {
@@ -45,6 +47,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // PUT: api/orderDetails/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Categories categories)
         {
@@ -60,6 +63,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // DELETE: api/orderDetails/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
