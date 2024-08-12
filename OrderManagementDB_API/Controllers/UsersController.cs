@@ -39,7 +39,6 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // POST: api/users
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Users>> Post(Users users)
         {
