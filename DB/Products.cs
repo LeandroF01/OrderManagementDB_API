@@ -26,15 +26,13 @@ namespace DB
         public decimal Price { get; set; }
 
         [MaxLength(100)]
-        public string Category { get; set; }
+        public int CategoryID { get; set; }
 
-        [Required]
-        public int Stock { get; set; }
 
         [MaxLength(255)]
         public string ImageURL { get; set; }
 
-        // Navigation property
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new HashSet<OrderDetails>();
+        public virtual Categories Category { get; set; }
+
     }
 }
