@@ -5,12 +5,12 @@ namespace DB
 {
     public class OrderManagementDBContext : DbContext
     {
-        public OrderManagementDBContext(DbContextOptions<OrderManagementDBContext> options) : base(options) { }
-
-
+        public OrderManagementDBContext(DbContextOptions<OrderManagementDBContext> options) : base(options) { }   
         
         public DbSet<Users> Users { get; set; }
         public DbSet<Products> Products { get; set; }
+        public DbSet<Ingredients> Ingredients { get; set; }
+        public DbSet<ProductIngredients> ProductIngredients { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<PaymentMethods> PaymentMethods { get; set; }
