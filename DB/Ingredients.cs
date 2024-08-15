@@ -25,8 +25,8 @@ namespace DB
         public decimal Quantity { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public int Unit { get; set; }
+        [MaxLength(50)]
+        public string Unit { get; set; }
 
 
         public virtual ICollection<ProductIngredients> ProductIngredients { get; set; } = new HashSet<ProductIngredients>();

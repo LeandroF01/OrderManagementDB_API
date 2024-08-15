@@ -25,7 +25,7 @@ namespace DB
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Price { get; set; }
 
-        [MaxLength(100)]
+        [Required]
         public int CategoryID { get; set; }
 
 
