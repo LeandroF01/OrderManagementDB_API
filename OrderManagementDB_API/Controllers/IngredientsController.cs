@@ -19,7 +19,6 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // GET: api/ingredients
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ingredients>>> Get()
         {
@@ -27,7 +26,6 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // GET: api/ingredients/5
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Ingredients>> Get(int id)
         {
