@@ -39,13 +39,35 @@ namespace OrderManagementDB_API.Controllers
         // POST: api/products
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Products>> Post(Products product)
+        public async Task<ActionResult<Products>> Post(ProductsDTO productDto)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = product.ProductID }, product);
-        }
+            try
+            {
+                var category = await _context.Categories.FindAsync(productDto.CategoryID);
+                if (category == null)
+                {
+                    return BadRequest(new { message = "Categoría no válida." });
+                }
 
+                var product = new Products
+                {
+                    Name = productDto.Name,
+                    Description = productDto.Description,
+                    Price = productDto.Price,
+                    CategoryID = productDto.CategoryID,
+                    ImageURL = productDto.ImageURL,
+                    Category = category
+                };
+
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(Get), new { id = product.ProductID }, product);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = $"Error al añadir el producto: {ex.Message}" });
+            }
+        }
         // PUT: api/products/5
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
