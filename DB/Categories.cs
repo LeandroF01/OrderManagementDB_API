@@ -19,6 +19,6 @@ namespace DB
         public string Name { get; set; }
 
         // Navigation property
-        public virtual ICollection<Products> Products { get; set; } = new HashSet<Products>();
+      //  public virtual ICollection<Products> Products { get; set; } = new HashSet<Products>();
     }
 }

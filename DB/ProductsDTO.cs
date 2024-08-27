@@ -5,14 +5,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DB;
 
 namespace DB
 {
-    public class Products
+    public class ProductsDTO
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Auto-incremental
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductID { get; set; }
 
         [Required]
@@ -32,8 +31,6 @@ namespace DB
 
         [MaxLength(255)]
         public string ImageURL { get; set; }
-
-        public virtual Categories Category { get; set; }
 
     }
 }
