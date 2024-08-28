@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace OrderManagementDB_API.Controllers
 {
@@ -39,8 +41,14 @@ namespace OrderManagementDB_API.Controllers
         // POST: api/productIngredients
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<ProductIngredients>> Post(ProductIngredients productIngredients)
+        public async Task<ActionResult<ProductIngredients>> Post(ProductIngredientsDTO productIngredientsDto)
         {
+            var productIngredients = new ProductIngredients
+            {             
+               ProductID = productIngredientsDto.ProductID,
+               IngredientID = productIngredientsDto.IngredientID,
+               Quantity = productIngredientsDto.Quantity,
+            };
             _context.ProductIngredients.Add(productIngredients);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = productIngredients.ProductIngredientID }, productIngredients);
