@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DB.DTO
 {
-    internal class UsersDTO
+    public class UsersDTO
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Auto-incremental

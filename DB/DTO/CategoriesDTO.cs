@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DB.DTO
 {
-    internal class CategoriesDTO
+    public class CategoriesDTO
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Auto-incremental

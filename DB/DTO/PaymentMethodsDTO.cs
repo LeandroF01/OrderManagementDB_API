@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DB.DTO
 {
-    internal class PaymentMethodsDTO
+    public class PaymentMethodsDTO
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Auto-incremental

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DB.DTO
 {
-    internal class AddressesDTO
+    public class AddressesDTO
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Auto-incremental
