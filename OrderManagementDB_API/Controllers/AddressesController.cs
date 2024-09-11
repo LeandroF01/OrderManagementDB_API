@@ -1,4 +1,5 @@
 ﻿using DB;
+using DB.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,8 +42,17 @@ namespace OrderManagementDB_API.Controllers
         // POST: api/addresses
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Addresses>> Post(Addresses addresses)
+        public async Task<ActionResult<Addresses>> Post(AddressesDTO addressesDto)
         {
+            var addresses = new Addresses
+            {
+                UserID = addressesDto.UserID,
+                AddressLine = addressesDto.AddressLine,
+                City = addressesDto.City,
+                State = addressesDto.State,
+                PostalCode = addressesDto.PostalCode, 
+            };
+
             _context.Addresses.Add(addresses);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = addresses.AddressID }, addresses);

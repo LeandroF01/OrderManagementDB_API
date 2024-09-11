@@ -1,4 +1,5 @@
 ﻿using DB;
+using DB.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,8 +42,15 @@ namespace OrderManagementDB_API.Controllers
         // POST: api/paymentMethods
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<PaymentMethods>> Post(PaymentMethods paymentMethods)
+        public async Task<ActionResult<PaymentMethods>> Post(PaymentMethods paymentMethodsDto)
         {
+            var paymentMethods = new PaymentMethods
+            {
+                OrderID = paymentMethodsDto.OrderID,
+                PaymentType = paymentMethodsDto.PaymentType,
+                Amount = paymentMethodsDto.Amount
+            };
+
             _context.PaymentMethods.Add(paymentMethods);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = paymentMethods.PaymentID }, paymentMethods);

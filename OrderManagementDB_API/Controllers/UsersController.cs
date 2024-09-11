@@ -1,4 +1,5 @@
 ﻿using DB;
+using DB.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
@@ -40,10 +41,18 @@ namespace OrderManagementDB_API.Controllers
 
         // POST: api/users
         [HttpPost]
-        public async Task<ActionResult<Users>> Post(Users users)
+        public async Task<ActionResult<Users>> Post(UsersDTO usersDto)
         {
-            // Hashear la contraseña antes de guardarla
-            users.Password = HashPassword(users.Password);
+
+            var users = new Users
+            {
+                Name = usersDto.Name,
+                Email = usersDto.Email,
+                Password = HashPassword(usersDto.Password),
+                Phone = usersDto.Phone,
+                Address = usersDto.Address,
+                UserType = usersDto.UserType
+            };
 
             _context.Users.Add(users);
             await _context.SaveChangesAsync();

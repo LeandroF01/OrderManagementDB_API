@@ -1,4 +1,5 @@
 ﻿using DB;
+using DB.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +41,15 @@ namespace OrderManagementDB_API.Controllers
         // POST: api/ingredients
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Ingredients>> Post(Ingredients ingredients)
+        public async Task<ActionResult<Ingredients>> Post(IngredientsDTO ingredientsDto)
         {
+            var ingredients = new Ingredients
+            {
+                Name = ingredientsDto.Name,
+                Quantity = ingredientsDto.Quantity,
+                Unit = ingredientsDto.Unit
+            };
+
             _context.Ingredients.Add(ingredients);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = ingredients.IngredientID }, ingredients);

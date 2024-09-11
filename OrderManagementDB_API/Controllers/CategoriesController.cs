@@ -1,4 +1,5 @@
 ﻿using DB;
+using DB.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +40,13 @@ namespace OrderManagementDB_API.Controllers
         // POST: api/categories
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Categories>> Post(Categories categories)
+        public async Task<ActionResult<Categories>> Post(CategoriesDTO categoriesDto)
         {
+            var categories = new Categories
+            {
+                Name = categoriesDto.Name
+            };
+
             _context.Categories.Add(categories);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = categories.CategoryID }, categories);
