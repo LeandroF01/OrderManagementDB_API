@@ -42,15 +42,23 @@ namespace OrderManagementDB_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Categories>> Post(CategoriesDTO categoriesDto)
         {
-            var categories = new Categories
+            try
             {
-                Name = categoriesDto.Name
-            };
+                var categories = new Categories
+                {
+                    Name = categoriesDto.Name
+                };
 
-            _context.Categories.Add(categories);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = categories.CategoryID }, categories);
+                _context.Categories.Add(categories);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(Get), new { id = categories.CategoryID }, categories);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = $"Error al añadir el categorie: {ex.Message}" });
+            }
         }
+
 
         // PUT: api/orderDetails/5
         [Authorize(Roles = "Admin")]
