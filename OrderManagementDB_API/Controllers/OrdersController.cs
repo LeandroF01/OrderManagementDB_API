@@ -63,19 +63,38 @@ namespace OrderManagementDB_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Orders orders)
         {
-            if (id != orders.OrderID)
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(orders).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            // Actualizar las propiedades del pedido con los nuevos valores
+            order.UserID = orders.UserID;
+            order.Date = orders.Date;
+            order.Status = orders.Status;
+            order.OrderType = orders.OrderType;
+            order.Total = orders.Total;
 
-            return NoContent();
+            try
+            {
+                // Guardar cambios
+                _context.Entry(order).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                // Devolver 204 NoContent si todo salió bien
+                return NoContent();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar posibles errores en la actualización
+                return StatusCode(500, $"Error actualizando la base de datos: {ex.Message}");
+            }
         }
 
-        // DELETE: api/orders/5
-        [Authorize]
+            // DELETE: api/orders/5
+            [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
