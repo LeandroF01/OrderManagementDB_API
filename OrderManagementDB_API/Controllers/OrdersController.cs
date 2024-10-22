@@ -13,12 +13,14 @@ namespace OrderManagementDB_API.Controllers
     {
         private OrderManagementDBContext _context;
 
+        // Constructor to inject the database context
         public OrdersController(OrderManagementDBContext context)
         {
             _context = context;
         }
 
         // GET: api/orders
+        // Retrieves the list of all orders from the database
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Orders>>> Get()
@@ -27,6 +29,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // GET: api/orders/5
+        // Retrieves a specific order by its ID
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Orders>> Get(int id)
@@ -40,17 +43,18 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // POST: api/orders
+        // Creates a new order in the database
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Orders>> Post(OrdersDTO ordersDto)
+        public async Task<ActionResult<Orders>> Post(Orders order)
         {
             var orders = new Orders
             {
-                UserID = ordersDto.UserID,
-                Date = ordersDto.Date,
-                Status = ordersDto.Status,
-                OrderType = ordersDto.OrderType,
-                Total = ordersDto.Total
+                UserID = order.UserID,
+                Date = order.Date,
+                Status = order.Status,
+                OrderType = order.OrderType,
+                Total = order.Total
             };
 
             _context.Orders.Add(orders);
@@ -59,6 +63,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // PUT: api/orders/5
+        // Updates an existing order based on the ID
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Orders orders)
@@ -70,7 +75,6 @@ namespace OrderManagementDB_API.Controllers
                 return NotFound();
             }
 
-            // Actualizar las propiedades del pedido con los nuevos valores
             order.UserID = orders.UserID;
             order.Date = orders.Date;
             order.Status = orders.Status;
@@ -79,22 +83,20 @@ namespace OrderManagementDB_API.Controllers
 
             try
             {
-                // Guardar cambios
                 _context.Entry(order).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
-                // Devolver 204 NoContent si todo salió bien
                 return NoContent();
             }
             catch (DbUpdateException ex)
             {
-                // Manejar posibles errores en la actualización
                 return StatusCode(500, $"Error actualizando la base de datos: {ex.Message}");
             }
         }
 
-            // DELETE: api/orders/5
-            [Authorize]
+        // DELETE: api/orders/5
+        // Deletes an order by ID
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
