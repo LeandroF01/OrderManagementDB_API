@@ -76,7 +76,7 @@ namespace OrderManagementDB_API.Controllers
         {
             if (id != product.ProductID)
             {
-                return BadRequest();
+                return BadRequest(new { message = "El ID del producto no coincide." });
             }
 
             _context.Entry(product).State = EntityState.Modified;

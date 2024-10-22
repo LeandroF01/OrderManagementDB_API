@@ -28,6 +28,7 @@ namespace OrderManagementDB_API.Controllers
         }
 
         // GET: api/users/5
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Users>> Get(int id)
         {
