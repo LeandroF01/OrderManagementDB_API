@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DB
 {
-    internal class Tables
+    public class Tables
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
