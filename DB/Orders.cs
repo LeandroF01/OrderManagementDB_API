@@ -32,9 +32,17 @@ namespace DB
         [Column(TypeName = "decimal(10, 2)")]
         public decimal Total { get; set; }
 
+        // New TableID column
+        public int? TableID { get; set; } // Nullable to accommodate orders without tables
+
+
         // Navigation properties
         [ForeignKey("UserID")]
         public virtual Users Users { get; set; }
+
+
+        [ForeignKey("TableID")]
+        public virtual Tables Table { get; set; } // Establishes the relationship to Tables
 
         public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new HashSet<OrderDetails>();
         public virtual ICollection<PaymentMethods> PaymentMethods { get; set; } = new HashSet<PaymentMethods>();
